@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/bc4059b6be.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./styles.css">
+
+  <title>Document</title>
+</head>
+<body>
+  <header>
+    <nav></nav>
+  </header>
+  <main>
+    <section class="lists-section" id="listSection">
+      <div class="add-list" id="addList">
+        <div class="plus-list" id="plusList">
+          <i class="fa-solid fa-plus plus-sign"></i>
+          <div class="add-field">Add a list</div>
+        </div>
+        <form class="form-addlist" id="formAddList">
+          <input type="text" name='textInput' id="textInput" class="add-list-input" placeholder="Enter list title">
+          <div class="button-and-cross" id="buttonAndCross">
+            <button type="submit" class="add-card-button" id="addListButton">Add List</button>
+            <i class="fa-solid fa-xmark fa-xl form-cross" id="list-cross"></i>
+          </div>
+        </form>
+      </div>
+    </section>
+    <div class="overlay" id="overlay">
+      <i class="fa-solid fa-xmark fa-xl overlay-cross" id="overlayCross"></i>
+    </div>
+
+    <div class="card-popup" id="cardPopup">
+      <div class="cardpopup-elementstructure card-popup-heading">
+        <div class="heading-text" id="headingCardName"></div>
+        <div class="in-list">in list <span class=in-list-name id="inListName"></span></div>
+      </div>
+      <div class="cardpopup-elementstructure card-popup-description" id="cardPopupDescriptiopn">
+        <div class="description-heading-and-button" id="descriptionHeadingAndButton">
+          <div class="heading-text" id="headingDescription">Description</div>
+          <button class="add-card-button description-edit-button" id="descriptionEditButton">Edit</button>
+        </div>
+        <p class="description-text" id="descriptionText"></p>
+        <div class="after-click-description" id="afterClickDescription">
+          <textarea rows="8" class="after-click-description-textarea"
+            id="afterClickDescriptionTextarea" placeholder="Add description in detail"></textarea>
+          <div class="after-click-description-buttons">
+            <button type="submit" class=" add-card-button after-click-description-savebutton"
+            id="afterClickDescriptionSavebutton">Save</button>
+            <i class="fa-solid fa-xmark after-click-description-cross-button" id="afterClickDescriptionCrossButton"></i>
+          </div>
+        </div>
+      </div>
+      <div class="cardpopup-elementstructure card-popup-activity" id="cardPopupActivity">
+        <div class="heading-text activity-heading">Activity</div>
+        <form class="activity-form" id="activityForm">
+          <input wrap="soft" class="activity-form-text" id="activityFormText" placeholder="Add a comment"></input>
+          <div class="activity-form-save-cross-buttons" id="activityFormSaveCrossButtons">
+            <button type="submit" class="add-card-button save-comment" id="saveCommentButton">Save</button>
+            <i class="fa-solid fa-xmark after-click-description-cross-button" id="commentCrossButton"></i>
+          </div>
+
+        </form>
+        <ul class="activity-form-ul" id="activityFormUl">
+          <!-- <li class="activity-form-li" id="activityFormLi">
+            <p class="activity-form-li-p" id="activityFormLiP">some comment</p>
+            <div class="activity-form-buttons" id="activityFormButtons">
+              <p class="activity-form-edit-delete-buttons" id="activityFormEditButton">edit</p>
+              <p class="activity-form-edit-delete-buttons" id="activityFormDeleteButton">delete</p>
+            </div>
+            <div class="after-edit-div">
+              <textarea class='after-edit-textarea'></textarea>
+              <div class="after-edit-buttons" >
+                <button type="submit" class="add-card-button save-comment" id="afterEditSaveButton">Save</button>
+                <i class="fa-solid fa-xmark after-click-description-cross-button" id="afterEditCrossButton"></i>
+              </div>
+            </div>
+          </li> -->
+        </ul>
+        <button class="delete-card" id="deleteCard">Delete</button>
+      </div>
+    </div>
+<!--  HTML structure -
+       <div class="list-div" id="TO-DO" data-list-div>
+        <div class="heading-and-button">
+          <p>To Do</p>
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+        <ul>
+
+        </ul>
+        <form class="add-card" data-form>
+          <div class="before-click-textarea" id="afterClickTextArea" data-afterClickTextArea>
+            <textarea name="add-card-textarea" id="addCardTextarea" rows="3" class="add-card-text-area" placeholder="Enter a title for this card..."></textarea>
+            <div class="button-and-cross" id="buttonAndCross">
+              <button type="submit" class="add-card-button" id="addCardButton">Add Card</button>
+              <i class="fa-solid fa-xmark fa-xl form-cross" id="form-cross"></i>
+            </div>
+          </div>
+          <div class="plus-input" id="plusInput">
+            <i class="fa-solid fa-plus plus-sign"></i>
+            <div class="add-field">Add a card</div>
+          </div>
+        </form>
+      </div>
+    -->
+  </main>
+</body>
+<script src="./script.js"></script>
+</html>

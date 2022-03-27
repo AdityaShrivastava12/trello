@@ -1,0 +1,136 @@
+{
+  "id": "623571db78c89d8101a9a8f7",
+  "address": null,
+  "badges": {
+    "attachmentsByType": {
+      "trello": {
+        "board": 0,
+        "card": 0
+      }
+    },
+    "location": false,
+    "votes": 0,
+    "viewingMemberVoted": false,
+    "subscribed": false,
+    "fogbugz": "",
+    "checkItems": 0,
+    "checkItemsChecked": 0,
+    "checkItemsEarliestDue": null,
+    "comments": 0,
+    "attachments": 0,
+    "description": false,
+    "due": null,
+    "dueComplete": false,
+    "start": null
+  },
+  "checkItemStates": [],
+  "closed": false,
+  "coordinates": null,
+  "creationMethod": null,
+  "dueComplete": false,
+  "dateLastActivity": "2022-03-19T06:02:03.971Z",
+  "desc": "",
+  "descData": {
+    "emoji": {}
+  },
+  "due": null,
+  "dueReminder": null,
+  "email": "adityashrivas+2y2wq8t55nymq5tiqw3+2y302fifxrgfjc5dw53+1j6safxho8@boards.trello.com",
+  "idBoard": "6234d5eb4b191b7978887fd6",
+  "idChecklists": [],
+  "idLabels": [],
+  "idList": "6234d5eb4b191b7978887fd7",
+  "idMembers": [],
+  "idMembersVoted": [],
+  "idShort": 3,
+  "idAttachmentCover": null,
+  "labels": [],
+  "limits": {
+    "attachments": {
+      "perCard": {
+        "status": "ok",
+        "disableAt": 1000,
+        "warnAt": 800
+      }
+    },
+    "checklists": {
+      "perCard": {
+        "status": "ok",
+        "disableAt": 500,
+        "warnAt": 400
+      }
+    },
+    "stickers": {
+      "perCard": {
+        "status": "ok",
+        "disableAt": 70,
+        "warnAt": 56
+      }
+    }
+  },
+  "locationName": null,
+  "manualCoverAttachment": false,
+  "name": "task1",
+  "pos": 65535,
+  "shortLink": "FMjktJdd",
+  "shortUrl": "https://trello.com/c/FMjktJdd",
+  "staticMapUrl": null,
+  "start": null,
+  "subscribed": false,
+  "url": "https://trello.com/c/FMjktJdd/3-task1",
+  "cover": {
+    "idAttachment": null,
+    "color": null,
+    "idUploadedBackground": null,
+    "size": "normal",
+    "brightness": "dark",
+    "idPlugin": null
+  },
+  "isTemplate": false,
+  "cardRole": null,
+  "checklists": [],
+  "customFieldItems": [],
+  "members": [],
+  "pluginData": [],
+  "actions": [{
+    "id": "623571db78c89d8101a9a901",
+    "idMemberCreator": "6234d5915a31bf226fe8e9a3",
+    "data": {
+      "card": {
+        "id": "623571db78c89d8101a9a8f7",
+        "name": "task1",
+        "idShort": 3,
+        "shortLink": "FMjktJdd"
+      },
+      "list": {
+        "id": "6234d5eb4b191b7978887fd7",
+        "name": "To Do"
+      },
+      "board": {
+        "id": "6234d5eb4b191b7978887fd6",
+        "name": "aditya",
+        "shortLink": "9WQuK8yj"
+      }
+    },
+    "appCreator": null,
+    "type": "createCard",
+    "date": "2022-03-19T06:02:03.982Z",
+    "limits": {},
+    "memberCreator": {
+      "id": "6234d5915a31bf226fe8e9a3",
+      "activityBlocked": false,
+      "avatarHash": "a67dba9629a9bc401d78a4a6d13634ea",
+      "avatarUrl": "https://trello-members.s3.amazonaws.com/6234d5915a31bf226fe8e9a3/a67dba9629a9bc401d78a4a6d13634ea",
+      "fullName": "Aditya Shrivastava",
+      "idMemberReferrer": null,
+      "initials": "AS",
+      "nonPublic": {
+        "fullName": "Aditya Shrivastava",
+        "initials": "AS",
+        "avatarHash": null
+      },
+      "nonPublicAvailable": true,
+      "username": "adityashrivastava50"
+    }
+  }]
+}

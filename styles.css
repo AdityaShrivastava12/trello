@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root{
+  --headerHeight: 50px;
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-width: 100vw;
+  width: fit-content;
+  background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+header{
+  height: var(--headerHeight);
+}
+main{
+  display: flex;
+  flex-direction: column;
+}
+.lists-section{
+  padding: 1em;
+  display: flex;
+  column-gap: 10px;
+  min-height: calc(100vh - var(--headerHeight));
+  align-items: flex-start;
+  font-family: "ubuntu";
+  /* flex-wrap: wrap; */
+  align-content: flex-start;
+  row-gap: 1rem;
+  min-width: 100%;
+  width: fit-content;
+  /* background-image: linear-gradient(315deg, #000000 0%, #7f8c8d 74%);
+  background-repeat: no-repeat;
+  background-size: cover; */
+}
+.add-list{
+  width: 300px;
+  background-color:rgba(0, 0, 0, 0.38);
+  border-radius: 0.5em;
+  color: white;
+}
+.plus-list{
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding: 0.5em 1em;
+  background: transparent;
+  border: none;
+}
+.add-list:hover{
+  cursor: pointer;
+}
+.add-list-input{
+  padding: 0.8em;
+  border-color: blue;
+}
+.add-list-input::placeholder{
+  color: rgb(139, 132, 132);
+}
+.add-card-button:hover{
+  cursor: pointer;
+}
+.form-addlist{
+  display: none;
+  flex-direction: column;
+  row-gap: 10px;
+  background-color: #ebecf0;
+  padding: 0.5rem;
+  border-radius: 0.5em;
+}
+.plus-list-afterclick{
+  display: none;
+}
+.form-addlist-afterclick{
+  display: flex;
+}
+.list-div{
+  display: flex;
+  flex-direction: column;
+  padding: ;
+  border-radius: 0.5em;
+  row-gap: 0.5rem;
+  width: 300px;
+  min-width: 300px;
+  background-color: #ebecf0;
+}
+.list-div:hover{
+  cursor: pointer;
+}
+.heading-and-button{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  width: 95%;
+  align-self: center;
+}
+.heading-and-button > p{
+  margin-top: 0.5rem;
+}
+.heading-and-button > i{
+  margin-top: 0.5rem;
+}
+.add-card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 2em;
+  margin-bottom: 0.5rem;
+}
+.plus-input{
+  display: flex;
+  align-items: center;
+  width: 95%;
+  column-gap: 0.3em;
+  padding: 0.5em 1.2em;
+  color:rgb(139, 132, 132);
+  font-size: 0.9rem;
+  border-radius: 0.5em;
+}
+.plus-input:hover{
+  cursor: pointer;
+  color: rgb(83, 79, 83);
+  background-color: rgb(222, 220, 220);
+}
+.add-field{
+}
+
+.plus-sign{
+  margin-top: 1.3%;
+}
+.after-click-plus-input{
+  display: none;
+}
+.before-click-textarea{
+  display: none;
+  flex-direction: column;
+  width: 95%;
+  row-gap: 0.8em;
+}
+.button-and-cross{
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+.after-click-textarea{
+  display: flex;
+}
+.after-click-plus-input{
+  display: none;
+}
+.add-card-text-area{
+  padding: 0.8em;
+  border-radius: 0.5em;
+  border: none;
+}
+.add-card-button{
+  padding: 0.5em 1em;
+  background-color: #0079bf;
+  color: white;
+  font-family: "ubuntu";
+  font-size: 0.9rem;
+  border-radius: 0.3em;
+  border: none;
+}
+.form-cross{
+  color: rgb(139, 132, 132);
+}
+.form-cross:hover{
+  color: rgb(83, 79, 83);
+}
+ul{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  width: 90%;
+  align-self: center;
+}
+li{
+  background-color: white;
+  border-radius: 0.3rem;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  justify-content: space-between;
+  position: relative;
+}
+/* li:hover > i{
+  display: block;
+} */
+.i-edit{
+  display: none;
+  color: rgb(68, 68, 68);
+}
+.i-edit-show{
+  display: block;
+}
+
+.editbox-div{
+  display: none;
+  width:100%;
+  height: 150px;
+  max-height: 150px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.editbox-div > textarea{
+  height: 70%;
+  width: 100%;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.hide{
+  display: none;
+}
+.show{
+  display: flex;
+}
+
+.overlay{
+  position: fixed;
+  opacity: 1;
+  display: none;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+  overflow-y: scroll;
+}
+.overlay.active{
+  display: block;
+}
+
+.card-popup{
+  display: none;
+  flex-direction: column;
+  row-gap: 2rem;
+  padding: 1rem;
+  align-items: flex-start;
+  position: fixed;
+  min-height: 90vh;
+  max-height: 90vh;
+  width: 50%;
+  min-width: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #ebecf0;
+  border-radius: 0.2rem;
+  z-index: 12;
+  overflow-y: auto;
+}
+.card-popup.show{
+  display: flex;
+}
+.cardpopup-elementstructure{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 0.4rem;
+}
+.heading-text{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-popup-heading > .heading-text{
+  font-size: 1.5rem;
+}
+.in-list-name{
+  text-decoration: underline;
+}
+.card-popup-description{
+  width: 100%;
+  row-gap: 1.2rem;
+  position: relative;
+}
+.description-text{
+  width: 100%;
+  background-color: rgb(210, 210, 210);
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  height: 50px;
+}
+.description-text.description-text-background{
+  background-color: transparent;
+}
+.description-text:hover{
+  cursor: pointer;
+  background-color: rgb(194, 190, 190);
+}
+
+.description-heading-and-button{
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+.description-edit-button{
+  background-color: rgb(210, 210, 210);
+  color: black;
+  display: none;
+}
+.description-edit-button.show{
+  display: block;
+}
+.after-click-description{
+  display: none;
+  flex-direction: column;
+  row-gap: 1rem;
+  width: 100%;
+}
+.after-click-description-textarea{
+  resize: none;
+  border: 2px solid rgb(4, 98, 138);
+  outline: none;
+  padding: 0.5rem;
+}
+.after-click-description.show{
+  display: flex;
+}
+.after-click-description-buttons{
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+.after-click-description-cross-button:hover{
+  cursor: pointer;
+}
+.card-popup-activity{
+  width: 100%;
+  row-gap: 1rem;
+}
+.activity-form{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  background-color: white;
+  row-gap: 1rem;
+}
+.activity-form-text{
+  resize: none;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all;
+  /* display: flex; */
+  height: 30px;
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border: 1px solid rgb(210, 210, 210);
+}
+
+.overlay-cross{
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  color: white;
+}
+.overlay-cross:hover{
+  cursor: pointer;
+}
+.activity-form-text.noBorder{
+  border: none;
+}
+
+.activity-form-ul{
+  align-self: flex-start;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+.activity-form-save-cross-buttons{
+  display: none;
+  column-gap: 1rem;
+  align-items: center;
+}
+.activity-form-save-cross-buttons.show{
+  display: flex;
+}
+.activity-form-li{
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 0.3rem;
+  background-color: transparent;
+}
+.activity-form-buttons{
+  display: flex;
+  column-gap: 1rem;
+  background: transparent;
+  margin-left: 0.5rem;
+}
+.activity-form-li-p{
+  background-color: white;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+.activity-form-edit-delete-buttons{
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+.activity-form-edit-delete-buttons:hover{
+  cursor: pointer;
+}
+.after-edit-div{
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  background-color: white;
+  row-gap: 1rem;
+}
+.after-edit-div.show{
+  display: flex;
+}
+.after-edit-textarea{
+  resize: none;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all;
+  /* display: flex; */
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+}
+.after-edit-buttons{
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+.activity-form-li-p.hide{
+  display: none;
+}
+.activity-form-buttons.hide{
+  display: none;
+}
+.delete-card{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.7rem 1rem 0.5rem 1rem;
+  background-color: rgb(245, 37, 0);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: 'Josefin Sans';
+  font-size: 1rem;
+}
+.delete-card:hover{
+  cursor: pointer;
+}
