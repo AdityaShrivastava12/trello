@@ -22,33 +22,15 @@ const overlayCross = document.querySelector('#overlayCross');
 const activityButtons = document.querySelector('#activityFormSaveCrossButtons');
 let currentCard;
 let listIdsArray = [];
-// let board = {
-  // idList: {
-  //   name: listname,
-  //   cards: [
-  //     {id: id,
-  //      name: name
-  //     },
-  //   ]
-  // }
-// };
-
-
-// let cardsArray = [];
-
-
-
 
 overlayCross.addEventListener('click', closeCardPopup);
 
-function closeCardPopup(event){
+function closeCardPopup(event) {
   let ul = document.querySelector('#activityFormUl');
   ul.innerHTML = '';
   cardPopup.classList.remove('show');
   overlay.classList.remove('active');
 }
-
-
 
 descriptionCross.addEventListener('click', () => {
   afterClickDescription.classList.remove('show');
@@ -56,7 +38,7 @@ descriptionCross.addEventListener('click', () => {
 })
 
 afterClickDescriptionSavebutton.addEventListener('click', () => {
-  if(afterClickDescriptionTextarea.value === ''){
+  if (afterClickDescriptionTextarea.value === '') {
     descriptionText.innerText = 'Add a more detailed description...';
     afterClickDescription.classList.remove('show');
     descriptionText.classList.remove('hide');
@@ -76,79 +58,81 @@ descriptionEditButton.addEventListener('click', () => {
   descriptionText.classList.add('hide');
 })
 
-function updateCardWithDescription(des){
-  fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}&desc=${des}`,{
-    method: "PUT",
-    headers: {
-      "Accept":"application/json"
-    }
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    console.log(response);
-  })
+function updateCardWithDescription(des) {
+  fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}&desc=${des}`, {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json"
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+    })
 }
 
-async function getData(){
-  let listsResponse = await fetch(`https://api.trello.com/1/boards/${idBoard}/lists?&key=${key}&token=${token}&filter=open`,{
+async function getData() {
+  let listsResponse = await fetch(`https://api.trello.com/1/boards/${idBoard}/lists?&key=${key}&token=${token}&filter=open`, {
     method: "GET",
     headings: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
   listIdsArray = await listsResponse.json();
   refreshDOMLists();
 }
 
-async function getDataCards(id){
-  let cardsResponse = await fetch(`https://api.trello.com/1/lists/${id}/cards?key=${key}&token=${token}`,{
+async function getDataCards(id) {
+  let cardsResponse = await fetch(`https://api.trello.com/1/lists/${id}/cards?key=${key}&token=${token}`, {
     method: "GET",
     headers: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
 
   let listCardsArray = await cardsResponse.json();
-  // console.log('step2');
   let cardsArray = [];
   listCardsArray.forEach((element) => {
     let tempArray = [];
     tempArray.push(element['name']);
     tempArray.push(element['idList']);
     tempArray.push(element['id']);
+    tempArray.push(element['pos']);
     cardsArray.push(tempArray);
   })
   refreshDOMCards(cardsArray);
 }
 
-function refreshDOMCards(cardsArray){
+function refreshDOMCards(cardsArray) {
   cardsArray.forEach((element) => {
-    // console.log('cardsArrayforeach called');
-    addListItem(element[0],element[1],element[2]);
+    addListItem(element[0], element[1], element[2], element[3]);
   })
 }
 
 document.addEventListener('DOMContentLoaded', getData);
 
-function refreshDOMLists(){
+function refreshDOMLists() {
   listIdsArray.reverse().forEach((element) => {
-    createListDiv(element['id'],element['name']);
+    createListDiv(element['id'], element['name']);
     getDataCards(element['id']);
   });
 }
 
-function addListItem(cardName,listId,cardId){
+function addListItem(cardName, listId, cardId, cardPos) {
   let li = document.createElement('li');
   li.addEventListener('mouseover', hover);
-  li.addEventListener('mouseout',notHover);
-  li.addEventListener('click',openCardPopup);
-  li.setAttribute('data-idCard',cardId);
+  li.addEventListener('mouseout', notHover);
+  li.addEventListener('click', openCardPopup);
+  li.setAttribute('data-idCard', cardId);
+  li.setAttribute('data-cardPos', cardPos);
+  li.setAttribute('draggable', "true");
+  li.classList.add('draggable');
   let p = document.createElement('p');
   p.innerText = cardName;
   let iEdit = document.createElement('i');
-  iEdit.classList.add('fa-solid','fa-pen','i-edit');
+  iEdit.classList.add('fa-solid', 'fa-pen', 'i-edit');
   iEdit.addEventListener('click', openPopup);
   let editBox = document.createElement('div');
   editBox.classList.add('editbox-div');
@@ -158,7 +142,7 @@ function addListItem(cardName,listId,cardId){
   editText.addEventListener('keyup', (event) => {
     event.preventDefault();
     event.stopPropagation();
-    if(event.keyCode === 13){
+    if (event.keyCode === 13) {
       event.preventDefault();
       event.target.nextElementSibling.click();
     }
@@ -194,7 +178,7 @@ const listCross = document.querySelector('#list-cross');
 
 listCross.addEventListener('click', closeAddList);
 
-function closeAddList(event){
+function closeAddList(event) {
   plusList.classList.remove("plus-list-afterclick");
   formAddList.classList.remove("form-addlist-afterclick");
 }
@@ -204,69 +188,59 @@ addListButton.addEventListener('click', (event) => {
   const listName = document.querySelector('#textInput').value;
   let myList = createAList(listName);
   myList.then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    let listId = response['id'];
-    createListDiv(listId,listName);
-    document.querySelector('#textInput').value = '';
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+      return response.json();
+    })
+    .then((response) => {
+      let listId = response['id'];
+      createListDiv(listId, listName);
+      document.querySelector('#textInput').value = '';
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 });
 
-function createAList(value){
-  return fetch(`https://api.trello.com/1/lists?key=${key}&token=${token}&name=${value}&idBoard=${idBoard}`,{
+function createAList(value) {
+  return fetch(`https://api.trello.com/1/lists?key=${key}&token=${token}&name=${value}&idBoard=${idBoard}`, {
     method: "POST",
-    body:JSON.stringify({
+    body: JSON.stringify({
       name: value
     }),
     headings: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
 }
 
-function createListDiv(listId,listName){
-
+function createListDiv(listId, listName) {
   let divListDiv = document.createElement("div");
   divListDiv.classList.add("list-div");
   divListDiv.setAttribute('data-list-div', '');
   divListDiv.setAttribute('data-idList', listId);
-
   let divHeadingAndButton = document.createElement('div');
   divHeadingAndButton.classList.add('heading-and-button');
-
   let pHeading = document.createElement('p');
   pHeading.innerText = listName;
   let iHeading = document.createElement('i');
-
-  iHeading.classList.add('fa-solid','fa-xmark');
+  iHeading.classList.add('fa-solid', 'fa-xmark');
   iHeading.addEventListener('click', (event) => {
     archiveList(event.target.parentElement.parentElement.getAttribute('data-idList'));
     closeListDiv(event);
   });
-
   divHeadingAndButton.appendChild(pHeading);
   divHeadingAndButton.appendChild(iHeading);
-
   divListDiv.appendChild(divHeadingAndButton);
-
   let ul = document.createElement('ul');
+  ul.classList.add('list-div-ul');
   divListDiv.appendChild(ul);
-
   let formBefore = document.createElement('form');
   formBefore.classList.add('add-card');
   formBefore.setAttribute('data-form', '');
-
   let divBeforeClickTextarea = document.createElement('div');
   divBeforeClickTextarea.classList.add('before-click-textarea');
-  divBeforeClickTextarea.setAttribute('data-afterClickTextArea','');
-
+  divBeforeClickTextarea.setAttribute('data-afterClickTextArea', '');
   formBefore.appendChild(divBeforeClickTextarea);
   divListDiv.appendChild(formBefore);
-
   let textArea = document.createElement('textarea');
   textArea.name = 'add-card-textarea'
   textArea.rows = '3';
@@ -274,10 +248,8 @@ function createListDiv(listId,listName){
   textArea.placeholder = 'Enter a title for this card...';
   textArea.addEventListener('keyup', submitTextArea);
   divBeforeClickTextarea.appendChild(textArea);
-
   let divButtonAndCross = document.createElement('div');
   divButtonAndCross.classList.add('button-and-cross');
-
   let buttonAddCard = document.createElement('button');
   buttonAddCard.type = "submit";
   buttonAddCard.classList.add('add-card-button');
@@ -288,54 +260,45 @@ function createListDiv(listId,listName){
     hideTextArea(event);
   });
   let iFormCross = document.createElement('i');
-  iFormCross.classList.add('fa-solid','fa-xmark','fa-xl','form-cross');
+  iFormCross.classList.add('fa-solid', 'fa-xmark', 'fa-xl', 'form-cross');
   iFormCross.id = "form-cross";
   iFormCross.addEventListener('click', hideTextArea);
-
   divButtonAndCross.appendChild(buttonAddCard);
   divButtonAndCross.appendChild(iFormCross);
-
   divBeforeClickTextarea.appendChild(divButtonAndCross);
-
   let divPlusInput = document.createElement('div');
   divPlusInput.classList.add('plus-input');
   divPlusInput.id = "plusInput";
-  divPlusInput.setAttribute('data-plus-input','');
+  divPlusInput.setAttribute('data-plus-input', '');
   divPlusInput.addEventListener('click', showTextArea);
-
   let iPlusSign = document.createElement('i');
-  iPlusSign.classList.add('fa-solid','fa-plus','plus-sign');
-
+  iPlusSign.classList.add('fa-solid', 'fa-plus', 'plus-sign');
   let divAddField = document.createElement('div');
   divAddField.classList.add('add-field');
   divAddField.innerText = 'Add a card';
-
   divPlusInput.appendChild(iPlusSign);
   divPlusInput.appendChild(divAddField);
-
   formBefore.appendChild(divPlusInput);
   listSection.insertBefore(divListDiv, addList);
 }
 
-function hover(event){
-  if(event.target.localName === 'li'){
+function hover(event) {
+  if (event.target.localName === 'li') {
     event.target.children.item(1).classList.add('i-edit-show');
-  }
-  else{
+  } else {
     event.target.parentElement.children.item(1).classList.add('i-edit-show');
   }
 }
 
-function notHover(event){
-  if(event.target.localName === 'li'){
+function notHover(event) {
+  if (event.target.localName === 'li') {
     event.target.children.item(1).classList.remove('i-edit-show');
-  }
-  else{
+  } else {
     event.target.parentElement.children.item(1).classList.remove('i-edit-show');
   }
 }
 
-function openPopup(event){
+function openPopup(event) {
   event.stopPropagation();
   overlay.classList.add('active');
   let value = event.target.previousElementSibling.innerText;
@@ -343,7 +306,7 @@ function openPopup(event){
   event.target.nextElementSibling.firstElementChild.value = value;
 }
 
-function closePopup(event){
+function closePopup(event) {
   event.stopPropagation();
   let cardId = event.target.parentElement.parentElement.getAttribute('data-idCard');
   let value = event.target.previousElementSibling.value.trim();
@@ -353,89 +316,88 @@ function closePopup(event){
   overlay.classList.remove('active');
 }
 
-function updateCard(id,cardName){
-  fetch(`https://api.trello.com/1/cards/${id}?key=${key}&token=${token}&name=${cardName}`,{
-    method: "PUT",
-    headers: {
-      "Accept":"application/json"
-    }
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+function updateCard(id, cardName) {
+  fetch(`https://api.trello.com/1/cards/${id}?key=${key}&token=${token}&name=${cardName}`, {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json"
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 }
 
-function noBackground(event){
+function noBackground(event) {
   event.target.classList.remove('edit');
 }
 
-function archiveList(id){
+function archiveList(id) {
   console.log(id);
-  fetch(`https://api.trello.com/1/lists/${id}/closed?key=${key}&token=${token}&value=true`,{
-    method:"PUT"
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    // console.log(response);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+  fetch(`https://api.trello.com/1/lists/${id}/closed?key=${key}&token=${token}&value=true`, {
+      method: "PUT"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 
   fetch('https://api.trello.com/1/lists/${id}/archiveAllCards?key=${key}&token=${token}', {
-    method: "POST"
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    // console.log(response);
-  })
+      method: "POST"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+    })
 }
 
-function submitTextArea(event){
+function submitTextArea(event) {
   event.preventDefault();
-  if(event.keyCode === 13 && !event.shiftKey){
-        event.preventDefault();
-        event.target.nextElementSibling.firstElementChild.click();
-        event.target.value = '';
-    }
+  if (event.keyCode === 13 && !event.shiftKey) {
+    event.preventDefault();
+    event.target.nextElementSibling.firstElementChild.click();
+    event.target.value = '';
+  }
 }
 
-function showTextArea(event){
+function showTextArea(event) {
   this.classList.add('after-click-plus-input');
   this.parentElement.firstElementChild.classList.add('after-click-textarea');
-  // console.log(event.target.parentElement.firstElementChild.firstElementChild);
   event.target.parentElement.firstElementChild.firstElementChild.value = "";
 }
 
 document.addEventListener('click', (event) => {
   listDiv.forEach((element) => {
-    if(!element.contains(event.target)){
+    if (!element.contains(event.target)) {
       element.lastElementChild.firstElementChild.classList.remove('after-click-textarea');
       element.lastElementChild.lastElementChild.classList.remove('after-click-plus-input');
     }
   })
 });
 
-function hideTextArea(event){
+function hideTextArea(event) {
   event.target.parentElement.parentElement.parentElement.lastElementChild.classList.remove('after-click-plus-input');
   event.target.parentElement.parentElement.classList.remove('after-click-textarea');
 }
 
-function closeListDiv(event){
+function closeListDiv(event) {
   event.target.parentElement.parentElement.remove();
 }
 
-async function createListItem(event){
+async function createListItem(event) {
   let textValue = event.target.parentElement.parentElement.firstElementChild.value;
   let idList = event.target.parentElement.parentElement.parentElement.parentElement.getAttribute('data-idList');
   let li = document.createElement('li');
@@ -443,9 +405,11 @@ async function createListItem(event){
   li.addEventListener('mouseover', hover);
   li.addEventListener('mouseout', notHover);
   li.addEventListener('click', openCardPopup);
+  li.setAttribute('draggable', 'true');
+  li.classList.add('draggable');
   let p = document.createElement('p');
   let iEdit = document.createElement('i');
-  iEdit.classList.add('fa-solid','fa-pen','i-edit');
+  iEdit.classList.add('fa-solid', 'fa-pen', 'i-edit');
   iEdit.addEventListener('click', openPopup);
   p.innerText = textValue.trim();
   let editBox = document.createElement('div');
@@ -457,7 +421,7 @@ async function createListItem(event){
     console.log('textarea clicked');
     event.preventDefault();
     event.stopPropagation();
-    if(event.keyCode === 13){
+    if (event.keyCode === 13) {
       event.preventDefault();
       event.target.nextElementSibling.click();
     }
@@ -483,45 +447,41 @@ async function createListItem(event){
   ul.appendChild(li);
 }
 
-async function openCardPopup(event){
-  // console.log(afterClickDescriptionTextarea.classList.contains('show'));
+async function openCardPopup(event) {
   afterClickDescription.classList.remove('show');
   descriptionText.classList.remove('hide');
   let cardValue;
   let listValue;
-  if(event.target.localName === 'i'){
+  if (event.target.localName === 'i') {
     return;
   }
-  if(event.target.localName === 'p'){
+  if (event.target.localName === 'p') {
     currentCard = event.target.parentElement.getAttribute('data-idCard');
     cardValue = event.target.innerText;
     listValue = event.target.parentElement.parentElement.previousElementSibling.firstElementChild.innerText;
   }
-  if(event.target.localName === 'li'){
+  if (event.target.localName === 'li') {
     currentCard = event.target.getAttribute('data-idCard');
     cardValue = event.target.firstElementChild.innerText;
     listValue = event.target.parentElement.previousElementSibling.firstElementChild.innerText;
   }
-  let descValue =  getDescription();
-  let allComments =  await getComments();
+  let descValue = getDescription();
+  let allComments = await getComments();
   console.log(allComments);
   allComments.reverse().forEach((element) => {
     console.log(element);
     console.log(element['id']);
-    makeComment(element['data']['text'],element['id']);
+    makeComment(element['data']['text'], element['id']);
   })
-  // console.log(descValue);
-  if(await descValue){
+  if (await descValue) {
     descriptionEditButton.classList.add('show');
-  }
-  else{
+  } else {
     descriptionEditButton.classList.remove('show');
   }
   descriptionText.addEventListener('click', () => {
-    if(descValue === ''){
+    if (descValue === '') {
       afterClickDescriptionTextarea.placeholder = descriptionText.innerText;
-    }
-    else{
+    } else {
       afterClickDescriptionTextarea.value = descriptionText.innerText;
     }
     afterClickDescription.classList.add('show');
@@ -529,15 +489,15 @@ async function openCardPopup(event){
   })
   cardPopup.classList.add('show');
   overlay.classList.add('active');
-  fillInValues(cardValue,listValue, await descValue);
+  fillInValues(cardValue, listValue, await descValue);
 }
 
-async function getComments(){
+async function getComments() {
   console.log('function called');
-  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}/actions?key=${key}&token=${token}&filter=commentCard`,{
+  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}/actions?key=${key}&token=${token}&filter=commentCard`, {
     method: "GET",
     headers: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
 
@@ -545,11 +505,11 @@ async function getComments(){
   return data;
 }
 
-async function getDescription(){
-  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}&fields=desc`,{
+async function getDescription() {
+  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}&fields=desc`, {
     method: "GET",
     headers: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
   let data = await response.json();
@@ -557,45 +517,40 @@ async function getDescription(){
   return descValue;
 }
 
-function fillInValues(cardValue,listValue,descValue){
+function fillInValues(cardValue, listValue, descValue) {
   // const cardPopup = document.querySelector('#cardPopup');
   // const headingCardName = document.querySelector('#headingCardName');
   // const inListName = document.querySelector('#inListName');
   headingCardName.innerText = cardValue;
   inListName.innerText = listValue;
-  if(descValue === ''){
+  if (descValue === '') {
     descriptionText.innerText = 'Add a description...';
     descriptionText.classList.remove('description-text-background');
-  }
-  else{
+  } else {
     descriptionText.innerText = descValue;
-    if(!descriptionText.classList.contains('description-text-background')){
+    if (!descriptionText.classList.contains('description-text-background')) {
       descriptionText.classList.add('description-text-background');
     }
   }
 }
 
-function hideTextAreaDiff(event){
-  event.target.parentElement.parentElement.parentElement.lastElementChild.classList.remove('after-click-plus-input');
-  event.target.parentElement.parentElement.classList.remove('after-click-textarea');
-}
-
-function makeAPIcall(text,id,li){
-  fetch(`https://api.trello.com/1/cards/?idList=${id}&key=${key}&token=${token}&name=${text}`,{
-    method: "POST",
-    headers:{
-      "Accept":"application/json"
-    }
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    li.setAttribute('data-idCard', response['id']);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+function makeAPIcall(text, id, li) {
+  fetch(`https://api.trello.com/1/cards/?idList=${id}&key=${key}&token=${token}&name=${text}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json"
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      li.setAttribute('data-idCard', response['id']);
+      li.setAttribute('data-cardPos', response['pos']);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 const activityFormText = document.querySelector('#activityFormText');
@@ -610,15 +565,13 @@ activityFormText.addEventListener('keydown', (event) => {
   event.target.style.height = `${scHeight}px`;
 })
 
-
-
 const saveCommentButton = document.querySelector("#saveCommentButton");
 activityFormText.addEventListener('click', (event) => {
   activityButtons.classList.add('show');
   event.target.classList.add('noBorder');
 })
 
-saveCommentButton.addEventListener('click', async function(event){
+saveCommentButton.addEventListener('click', async function(event) {
   event.preventDefault();
   activityFormText.classList.remove('noBorder');
   activityButtons.classList.remove('show');
@@ -628,6 +581,7 @@ saveCommentButton.addEventListener('click', async function(event){
   makeComment(comment, commentId);
   activityFormText.value = '';
 })
+
 const commentCrossButton = document.querySelector("#commentCrossButton");
 commentCrossButton.addEventListener('click', () => {
   activityFormText.classList.remove('noBorder');
@@ -636,25 +590,25 @@ commentCrossButton.addEventListener('click', () => {
 
 const activityFormLiP = document.querySelector("#activityFormLiP");
 
-async function addCommentAPICall(text){
-  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}/actions/comments?text=${text}&key=${key}&token=${token}`,{
+async function addCommentAPICall(text) {
+  let response = await fetch(`https://api.trello.com/1/cards/${currentCard}/actions/comments?text=${text}&key=${key}&token=${token}`, {
     method: "POST",
     headers: {
-      "Accept":"application/json"
+      "Accept": "application/json"
     }
   })
   let data = await response.json();
   return data['id'];
 }
 
-function makeComment(comment,commentId){
+function makeComment(comment, commentId) {
   console.log(commentId);
-  if(!comment){
+  if (!comment) {
     return;
   }
   let ul = document.querySelector('#activityFormUl');
   let li = document.createElement('li');
-  li.setAttribute('data-idComment',commentId);
+  li.setAttribute('data-idComment', commentId);
   li.classList.add('activity-form-li');
   ul.insertBefore(li, ul.firstChild);
   let pText = document.createElement('p');
@@ -675,7 +629,7 @@ function makeComment(comment,commentId){
   let pDelete = document.createElement('p');
   pDelete.innerText = 'delete';
   pDelete.classList.add('activity-form-edit-delete-buttons');
-  pDelete.addEventListener('click',() => {
+  pDelete.addEventListener('click', () => {
     console.log(event);
     deleteComment(event);
   })
@@ -693,8 +647,8 @@ function makeComment(comment,commentId){
   afterEditSaveButton.type = 'submit';
   afterEditSaveButton.classList.add('add-card-button', "save-comment");
   afterEditSaveButton.innerText = 'Save';
-  afterEditSaveButton.addEventListener('click',(event) => {
-    saveEditedComment(event,commentId);
+  afterEditSaveButton.addEventListener('click', (event) => {
+    saveEditedComment(event, commentId);
   })
   afterEditButtons.appendChild(afterEditSaveButton);
   let i = document.createElement('i');
@@ -706,77 +660,197 @@ function makeComment(comment,commentId){
   afterEditButtons.appendChild(i);
 }
 
-function deleteComment(event){
+function deleteComment(event) {
   let commentId = event.target.parentElement.parentElement.getAttribute('data-idComment');
   deleteCommentAPICall(commentId);
   event.target.parentElement.parentElement.remove();
 }
 
-function deleteCommentAPICall(commentId){
-  fetch(`https://api.trello.com/1/cards/${currentCard}/actions/${commentId}/comments?key=${key}&token=${token}`,{
-    method: "DELETE"
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  })
+function deleteCommentAPICall(commentId) {
+  fetch(`https://api.trello.com/1/cards/${currentCard}/actions/${commentId}/comments?key=${key}&token=${token}`, {
+      method: "DELETE"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
 }
 
-function openEditView(event){
+function openEditView(event) {
   let commentToEdit = event.target.parentElement.previousElementSibling.innerText;
   event.target.parentElement.nextElementSibling.firstElementChild.value = commentToEdit;
   event.target.parentElement.previousElementSibling.classList.add('hide');
   event.target.parentElement.classList.add('hide');
   event.target.parentElement.nextElementSibling.classList.add('show');
 }
-function closeEditView(event){
+
+function closeEditView(event) {
   event.target.parentElement.parentElement.classList.remove('show');
   event.target.parentElement.parentElement.previousElementSibling.classList.remove('hide');
   event.target.parentElement.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide');
 }
-function saveEditedComment(event,commentId){
+
+function saveEditedComment(event, commentId) {
   let editedComment = event.target.parentElement.previousElementSibling.value;
-  if(!editedComment){
+  if (!editedComment) {
     return;
   }
   event.target.parentElement.parentElement.previousElementSibling.previousElementSibling.innerText = editedComment;
   event.target.parentElement.parentElement.classList.remove('show');
   event.target.parentElement.parentElement.previousElementSibling.classList.remove('hide');
   event.target.parentElement.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide');
-  saveEditedCommentAPICall(editedComment,commentId);
+  saveEditedCommentAPICall(editedComment, commentId);
 }
-function saveEditedCommentAPICall(text,id){
-  fetch(`https://api.trello.com/1/cards/${currentCard}/actions/${id}/comments?text=${text}&key=${key}&token=${token}`,{
-    method: "PUT"
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((response) => {
-    console.log(response);
-  })
+
+function saveEditedCommentAPICall(text, id) {
+  fetch(`https://api.trello.com/1/cards/${currentCard}/actions/${id}/comments?text=${text}&key=${key}&token=${token}`, {
+      method: "PUT"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+    })
 }
+
 const deleteCard = document.querySelector('#deleteCard');
 deleteCard.addEventListener('click', (event) => {
   deleteCardAPICall();
   deleteCardFromDOM();
   closeCardPopup();
 })
-function deleteCardAPICall(){
-  fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}`,{
-    method: "DELETE"
-  })
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  })
+
+function deleteCardAPICall() {
+  fetch(`https://api.trello.com/1/cards/${currentCard}?key=${key}&token=${token}`, {
+      method: "DELETE"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
 }
 
-function deleteCardFromDOM(){
+function deleteCardFromDOM() {
   let cardElement = document.querySelector(`[data-idCard='${currentCard}']`);
   cardElement.remove();
+}
+
+// drag and drop
+document.addEventListener("dragstart", (event) => {
+  if (event.target.matches(".draggable")) {
+    event.target.classList.add('dragging');
+  };
+})
+
+document.addEventListener('dragend', (event) => {
+  if (event.target.matches('.draggable')) {
+    event.target.classList.remove('dragging');
+  }
+})
+
+document.addEventListener('dragover', (event) => {
+  if (event.target.matches('.list-div-ul') ||
+    event.target.matches('.list-div')) {
+    event.preventDefault();
+    const afterElement = getDragAfterElement(event.target, event.clientY);
+    console.log(afterElement);
+    const draggable = document.querySelector('.draggable.dragging');
+    if (!afterElement) {
+      if (event.target.matches('.list-div')) {
+        event.target.children.item(1).appendChild(draggable);
+      } else {
+        event.target.appendChild(draggable);
+      }
+    } else {
+      event.target.insertBefore(draggable, afterElement);
+    }
+    updateCardAfterDrop(draggable);
+  }
+})
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    // console.log(box);
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return {
+        offset: offset,
+        element: child
+      };
+    } else {
+      return closest;
+    }
+  }, {
+    offset: Number.NEGATIVE_INFINITY
+  }).element
+}
+
+function updateCardAfterDrop(card) {
+  let cardId = card.getAttribute('data-idCard');
+  let listId = card.parentElement.parentElement.getAttribute('data-idList')
+  let nextCardPos;
+  let previousCardPos;
+  let currentCardPos;
+  console.log(cardId);
+  if (!card.previousElementSibling && !card.nextElementSibling) {
+    currentCardPos = null;
+  } else if (!card.previousElementSibling) {
+    nextCardPos = parseFloat(card.nextElementSibling.getAttribute('data-cardPos'));
+    if (nextCardPos) {
+      currentCardPos = nextCardPos / 2;
+    }
+  } else if (!card.nextElementSibling) {
+    previousCardPos = parseFloat(card.previousElementSibling.getAttribute('data-cardPos'));
+    if (previousCardPos) {
+      currentCardPos = previousCardPos * 2;
+    }
+  } else {
+    nextCardPos = parseFloat(card.nextElementSibling.getAttribute('data-cardPos'));
+    previousCardPos = parseFloat(card.previousElementSibling.getAttribute('data-cardPos'));
+    currentCardPos = (nextCardPos + previousCardPos) / 2;
+  }
+  updateCardAfterDropAPICall(currentCardPos, cardId, listId);
+}
+
+function updateCardAfterDropAPICall(cardPos, cardId, listId) {
+  if (cardPos) {
+    fetch(`https://api.trello.com/1/cards/${cardId}?key=${key}&token=${token}&idList=${listId}&pos=${cardPos}`, {
+        method: "PUT",
+        headers: {
+          "Accept": "application/json"
+        }
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  } else {
+    fetch(`https://api.trello.com/1/cards/${cardId}?key=${key}&token=${token}&idList=${listId}`, {
+        method: "PUT",
+        headers: {
+          "Accept": "application/json"
+        }
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 }
